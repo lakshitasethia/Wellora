@@ -7,11 +7,16 @@ const Tesseract = require('tesseract.js');
 const path = require('path');
 const fs = require('fs');
 const axios = require('axios');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const Report = require('./models/Report');
+const User = require('./models/User');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const JWT_SECRET = process.env.JWT_SECRET || 'wellora_secret_key_123';
 
 // Connect to MongoDB Local Community Server
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/wellora';
@@ -22,6 +27,62 @@ mongoose.connect(MONGODB_URI).then(() => console.log('Connected to MongoDB'))
 const upload = multer({ dest: 'uploads/' });
 
 const FASTAPI_URL = process.env.FASTAPI_URL || 'http://127.0.0.1:8000';
+
+// --- AUTHENTICATION ROUTES --- //
+
+// Register User
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    
+    let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ error: 'User already exists' });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    user = new User({
+      name,
+      email,
+      password: hashedPassword
+    });
+
+    await user.save();
+
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    res.json({ success: true, token, user: { id: user._id, name: user.name, email: user.email } });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server details error' });
+  }
+});
+
+// Login User
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ error: 'Invalid Credentials' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Invalid Credentials' });
+    }
+
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    res.json({ success: true, token, user: { id: user._id, name: user.name, email: user.email } });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// --- ML RUNNER ROUTE --- //
 
 app.post('/api/upload-report', upload.single('report'), async (req, res) => {
   try {

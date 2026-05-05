@@ -119,8 +119,8 @@
         Wellora
       </a>
       <div class="nav-actions">
-        <span style="font-weight: 500; margin-right: 15px;">Welcome, Patient</span>
-        <a href="index.html" class="btn btn-outline" style="padding: 6px 16px;">Logout</a>
+        <span id="userNameDisplay" style="font-weight: 500; margin-right: 15px;">Loading...</span>
+        <button id="logoutBtn" class="btn btn-outline" style="padding: 6px 16px;">Logout</button>
       </div>
     </div>
   </header>
@@ -179,6 +179,27 @@
   </div>
 
   <script>
+    // Authentication Check
+    const token = localStorage.getItem('wellora_token');
+    const userStr = localStorage.getItem('wellora_user');
+    
+    if (!token || !userStr) {
+      window.location.href = 'login.html';
+    } else {
+      try {
+        const user = JSON.parse(userStr);
+        document.getElementById('userNameDisplay').textContent = `Welcome, ${user.name}`;
+      } catch (e) {
+        document.getElementById('userNameDisplay').textContent = 'Welcome, Patient';
+      }
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('wellora_token');
+      localStorage.removeItem('wellora_user');
+      window.location.href = 'login.html';
+    });
+
     const reportFileInput = document.getElementById('reportFile');
     const fileNameDisplay = document.getElementById('fileNameDisplay');
     const uploadForm = document.getElementById('uploadForm');
