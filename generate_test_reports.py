@@ -62,3 +62,20 @@ create_report('report_borderline.png',
     {"age": "54", "sex": "Male", "cp": "1", "trestbps": "130", "chol": "240", "fbs": "< 120 mg/dl (0)", "restecg": "1", "thalach": "145", "exang": "0 (False)", "oldpeak": "1.0", "slope": "1", "ca": "1", "thal": "2"}
 )
 
+# Report 4: Moderate Risk
+create_report('report_moderate_risk.png', 
+    {"name": "Emily Davis", "date": "October 27, 2026"},
+    {"age": "58", "sex": "Female", "cp": "2", "trestbps": "140", "chol": "260", "fbs": "> 120 mg/dl (1)", "restecg": "0", "thalach": "150", "exang": "1 (True)", "oldpeak": "1.8", "slope": "1", "ca": "1", "thal": "3"}
+)
+
+# Report 5: Low Risk 2
+create_report('report_low_risk_2.png', 
+    {"name": "Michael Wilson", "date": "October 28, 2026"},
+    {"age": "45", "sex": "Male", "cp": "1", "trestbps": "120", "chol": "200", "fbs": "< 120 mg/dl (0)", "restecg": "0", "thalach": "165", "exang": "0 (False)", "oldpeak": "0.5", "slope": "2", "ca": "0", "thal": "2"}
+)
+
+# Report 6: Severe Risk
+create_report('report_severe_risk.png', 
+    {"name": "David Miller", "date": "October 29, 2026"},
+    {"age": "70", "sex": "Male", "cp": "3", "trestbps": "180", "chol": "320", "fbs": "> 120 mg/dl (1)", "restecg": "2", "thalach": "100", "exang": "1 (True)", "oldpeak": "3.5", "slope": "1", "ca": "3", "thal": "3"}
+)

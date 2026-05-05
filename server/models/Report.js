@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const reportSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   symptoms: String,
   ocrText: String,
   extractedMetrics: Object,

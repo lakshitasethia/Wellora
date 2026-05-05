@@ -28,6 +28,20 @@ const upload = multer({ dest: 'uploads/' });
 
 const FASTAPI_URL = process.env.FASTAPI_URL || 'http://127.0.0.1:8000';
 
+// --- MIDDLEWARE --- //
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: 'Access denied' });
+  const token = authHeader.split(' ')[1];
+  try {
+    const verified = jwt.verify(token, JWT_SECRET);
+    req.user = verified; // verified contains { id: user._id }
+    next();
+  } catch (err) {
+    res.status(400).json({ error: 'Invalid token' });
+  }
+};
+
 // --- AUTHENTICATION ROUTES --- //
 
 // Register User
@@ -84,7 +98,7 @@ app.post('/api/auth/login', async (req, res) => {
 
 // --- ML RUNNER ROUTE --- //
 
-app.post('/api/upload-report', upload.single('report'), async (req, res) => {
+app.post('/api/upload-report', verifyToken, upload.single('report'), async (req, res) => {
   try {
     const { symptoms } = req.body;
     const file = req.file;
@@ -94,8 +108,10 @@ app.post('/api/upload-report', upload.single('report'), async (req, res) => {
     }
 
     console.log('1. Processing OCR...');
-    // 1. Run OCR on the image
-    const { data: { text } } = await Tesseract.recognize(file.path, 'eng');
+    // 1. Run OCR on the image explicitly with a new worker to prevent memory leaks / crashes on larger PNGs
+    const worker = await Tesseract.createWorker('eng');
+    const { data: { text } } = await worker.recognize(file.path);
+    await worker.terminate();
     
     console.log('2. Extracting metrics & Running prediction module via FastAPI...');
     // 2. & 3. & 4. Use FastAPI to extract metrics, predict, and frame the diagnosis
@@ -117,6 +133,7 @@ app.post('/api/upload-report', upload.single('report'), async (req, res) => {
 
     // 5. Save to MongoDB
     const reportRecord = new Report({
+      userId: req.user.id,
       symptoms,
       ocrText: text,
       extractedMetrics: metricsResult,
@@ -141,7 +158,33 @@ app.post('/api/upload-report', upload.single('report'), async (req, res) => {
   }
 });
 
+
+// --- FETCH USER PROFILE ROUTE --- //
+app.get('/api/user/profile', verifyToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    const reportCount = await Report.countDocuments({ userId: req.user.id });
+    res.json({ success: true, user: { id: user._id, name: user.name, email: user.email }, reportCount });
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+    res.status(500).json({ error: 'Failed to fetch profile' });
+  }
+});
+
+// --- FETCH REPORTS ROUTE --- //
+app.get('/api/reports', verifyToken, async (req, res) => {
+  try {
+    const reports = await Report.find({ userId: req.user.id }).sort({ createdAt: 1 });
+    res.json({ success: true, reports });
+  } catch (error) {
+    console.error('Error fetching reports:', error);
+    res.status(500).json({ error: 'Failed to fetch reports' });
+  }
+});
+
 const PORT = process.env.PORT || 5001;
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

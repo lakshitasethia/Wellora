@@ -191,9 +191,6 @@ header {
 }
 
 .hero .container {
-  display: flex;
-  align-items: center;
-  gap: 60px;
   position: relative;
   z-index: 1;
 }
@@ -504,8 +501,6 @@ header {
 }
 
 .steps-container {
-  display: flex;
-  justify-content: space-between;
   position: relative;
   max-width: 1000px;
   margin: 0 auto;
@@ -609,10 +604,8 @@ header {
 }
 
 .stats-container {
-  display: flex;
-  justify-content: space-around;
-  position: relative;
-  z-index: 1;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .stat-item {
@@ -642,8 +635,6 @@ footer {
 }
 
 .footer-content {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 40px;
   margin-bottom: 60px;
 }
@@ -817,47 +808,25 @@ footer {
   color: var(--accent-teal);
 }
 
-/* Responsive */
+
+/* Responsive Tweaks using raw CSS for non-Bootstrap things */
 @media (max-width: 992px) {
-  .hero .container {
-    flex-direction: column;
-  }
-  .hero-dashboard {
-    width: 100%;
-  }
-  .steps-container {
-    flex-direction: column;
-    gap: 40px;
-  }
   .steps-line {
     display: none;
   }
   .step.active {
     transform: none;
   }
-  .stats-container {
-    flex-wrap: wrap;
-    gap: 40px;
-  }
   .stat-item {
     width: 40%;
-  }
-  .footer-content {
-    grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  .nav-links, .sub-navbar {
-    display: none;
-  }
   .hero-title {
     font-size: 2.5rem;
   }
   .stat-item {
     width: 100%;
-  }
-  .footer-content {
-    grid-template-columns: 1fr;
   }
 }
