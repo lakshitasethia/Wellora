@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wellora | AI Heart Disease Prediction</title>
+  <link rel="stylesheet" href="./css/styles.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+
+  <!-- Sub Navbar -->
+  <div class="sub-navbar">
+    <div class="container">
+      <div class="sub-nav-item">
+        <i class="ph ph-stethoscope"></i> SYMPTOM CHECK
+      </div>
+      <div class="sub-nav-item">
+        <i class="ph ph-brain"></i> AI PREDICTION
+      </div>
+      <div class="sub-nav-item">
+        <i class="ph ph-file-text"></i> MEDICAL REPORTS
+      </div>
+      <div class="sub-nav-item">
+        <i class="ph ph-heartbeat"></i> CARDIAC HEALTH
+      </div>
+      <div class="sub-nav-item">
+        <i class="ph ph-user-md"></i> DOCTOR CONSULT
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navbar -->
+  <header>
+    <div class="container navbar">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <i class="ph ph-heartbeat" style="font-size: 24px;"></i>
+        </div>
+        Wellora
+      </a>
+      
+      <nav class="nav-links">
+        <a href="#about">About</a>
+        <a href="#features">Features</a>
+        <a href="#diagnostics">Diagnostics</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-primary login-btn">
+          <i class="ph ph-lock-key"></i> Login Portal
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Predicting your heart's future, <span>today.</span></h1>
+        <p class="hero-subtitle">
+          An AI-powered heart disease prediction platform. From symptom analysis to actionable insights — Wellora orchestrates your cardiovascular health with precision using state-of-the-art ML models.
+        </p>
+        <div class="hero-buttons">
+          <a href="login.html" class="btn btn-primary btn-large" style="display: inline-flex; align-items: center; gap: 8px;">
+            Start Assessment <i class="ph ph-caret-right"></i>
+          </a>
+        </div>
+        
+        <div class="hero-mini-cards">
+          <div class="mini-card">
+            <div class="mini-card-icon"><i class="ph ph-stethoscope"></i></div>
+            <div class="mini-card-title">Patient</div>
+            <div class="mini-card-value">Diagnose</div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-card-icon"><i class="ph ph-activity"></i></div>
+            <div class="mini-card-title">Vitals</div>
+            <div class="mini-card-value">Monitor</div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-card-icon"><i class="ph ph-shield-check"></i></div>
+            <div class="mini-card-title">Health</div>
+            <div class="mini-card-value">Govern</div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-card-icon"><i class="ph ph-chart-bar"></i></div>
+            <div class="mini-card-title">Reports</div>
+            <div class="mini-card-value">Analyze</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-dashboard">
+        <!-- Floating Elements -->
+        <div class="glass-float right">
+          <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 5px; display: flex; align-items: center; gap: 5px;">
+            <i class="ph-fill ph-file-text"></i> Pending OCR
+          </div>
+          <div style="font-size: 1.5rem; font-weight: 700;">12</div>
+          <div style="font-size: 0.7rem; color: #94a3b8;">Lab Reports</div>
+        </div>
+        
+        <div class="glass-float left">
+          <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 5px; display: flex; align-items: center; gap: 5px;">
+            <div class="status-dot"></div> Processing
+          </div>
+          <div style="font-size: 1.5rem; font-weight: 700;">38</div>
+          <div style="font-size: 0.7rem; color: #94a3b8;">Scans Today</div>
+        </div>
+
+        <div class="dash-header">
+          <div class="dash-title">
+            <h3>System Overview</h3>
+            <p>Real-time diagnostic operations</p>
+          </div>
+          <div class="dash-status">
+            <div class="status-dot"></div> LIVE
+          </div>
+        </div>
+        
+        <div class="dash-metrics">
+          <div class="dash-metric">
+            <div class="dash-metric-title">Active Assessments</div>
+            <div class="dash-metric-value">847</div>
+            <div class="dash-metric-trend">+12% from last week</div>
+          </div>
+          <div class="dash-metric">
+            <div class="dash-metric-title">Model Accuracy</div>
+            <div class="dash-metric-value">96.4%</div>
+            <div class="dash-metric-trend" style="color: #94a3b8;">Validated</div>
+          </div>
+        </div>
+        
+        <div class="dash-chart">
+          <div class="chart-title">Diagnosis Flow — 24h</div>
+          <div class="chart-bars">
+            <!-- Mock bars -->
+            <div class="chart-bar" style="height: 30%"></div>
+            <div class="chart-bar" style="height: 40%"></div>
+            <div class="chart-bar" style="height: 35%"></div>
+            <div class="chart-bar" style="height: 50%"></div>
+            <div class="chart-bar" style="height: 60%"></div>
+            <div class="chart-bar" style="height: 45%"></div>
+            <div class="chart-bar" style="height: 55%"></div>
+            <div class="chart-bar" style="height: 70%"></div>
+            <div class="chart-bar" style="height: 80%"></div>
+            <div class="chart-bar" style="height: 65%"></div>
+            <div class="chart-bar" style="height: 75%"></div>
+            <div class="chart-bar" style="height: 90%"></div>
+          </div>
+          
+          <div class="chart-progress-bars">
+            <div class="progress-item">
+              <div class="progress-label">Low</div>
+              <div class="progress-track"><div class="progress-fill" style="width: 78%"></div></div>
+              <div class="progress-value">78%</div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label">Med</div>
+              <div class="progress-track"><div class="progress-fill blue" style="width: 65%"></div></div>
+              <div class="progress-value">65%</div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-label">High</div>
+              <div class="progress-track"><div class="progress-fill" style="width: 45%; background: #ef4444;"></div></div>
+              <div class="progress-value">45%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workflow Section -->
+  <section class="workflow" id="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Streamlined AI Workflow</h2>
+        <p class="section-subtitle">From initial data input to final diagnostic report, experience a seamless healthcare journey powered by intelligent automation.</p>
+      </div>
+      
+      <div class="steps-container">
+        <div class="steps-line"></div>
+        
+        <div class="step">
+          <div class="step-icon"><i class="ph ph-user-focus"></i></div>
+          <div class="step-number">Step 01</div>
+          <h3 class="step-title">Data Collection</h3>
+          <p class="step-desc">Input vital signs, demographic data, and symptoms through our intuitive patient portal.</p>
+        </div>
+        
+        <div class="step active">
+          <div class="step-icon"><i class="ph ph-scan"></i></div>
+          <div class="step-number">Step 02</div>
+          <h3 class="step-title">OCR & Processing</h3>
+          <p class="step-desc">Automated extraction of data from uploaded medical reports using advanced OCR technology.</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-icon"><i class="ph ph-brain"></i></div>
+          <div class="step-number">Step 03</div>
+          <h3 class="step-title">AI Prediction</h3>
+          <p class="step-desc">Our ensemble ML model analyzes the structured data to predict cardiovascular risk accurately.</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-icon"><i class="ph ph-file-plus"></i></div>
+          <div class="step-number">Step 04</div>
+          <h3 class="step-title">Actionable Insights</h3>
+          <p class="step-desc">Receive a comprehensive report with next steps, ready for doctor consultation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="stats-bg-pattern"></div>
+    <div class="container stats-container">
+      <div class="stat-item">
+        <div class="stat-value">96%+</div>
+        <div class="stat-label">Model Accuracy</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">50k+</div>
+        <div class="stat-label">Datasets Trained</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">&lt;2s</div>
+        <div class="stat-label">Prediction Time</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">24/7</div>
+        <div class="stat-label">Platform Access</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a href="#" class="logo" style="font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 10px;">
+            <div class="logo-icon" style="width: 32px; height: 32px; font-size: 18px;">
+              <i class="ph ph-heartbeat"></i>
+            </div>
+            Wellora
+          </a>
+          <p class="footer-desc">Empowering patients and healthcare institutions with next-generation predictive digital infrastructure for cardiovascular health.</p>
+        </div>
+        
+        <div class="footer-links">
+          <h4 class="footer-heading">Platform</h4>
+          <ul>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">AI Models</a></li>
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Research</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4 class="footer-heading">Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4 class="footer-heading">Connect</h4>
+          <ul>
+            <li><a href="#">Support</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">API Access</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 Wellora Diagnostics Inc. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Dashboard | Wellora</title>
+  <link rel="stylesheet" href="./css/styles.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .dashboard-container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .dash-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .dash-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      border: 1px solid var(--border-light);
+      margin-bottom: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    textarea.form-control {
+      resize: vertical;
+      min-height: 100px;
+    }
+    .file-upload-box {
+      border: 2px dashed var(--accent-teal);
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      background: rgba(45, 212, 191, 0.05);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .file-upload-box:hover {
+      background: rgba(45, 212, 191, 0.1);
+    }
+    .file-upload-box i {
+      font-size: 48px;
+      color: var(--accent-teal);
+      margin-bottom: 10px;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    .results-card {
+      display: none;
+      background: var(--primary-dark);
+      color: white;
+    }
+    .loader {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+    .spinner {
+      border: 4px solid rgba(255,255,255,0.1);
+      border-left-color: var(--accent-teal);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .diagnosis-text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      border-left: 4px solid var(--accent-teal);
+      margin-top: 20px;
+    }
+    .prediction-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    .badge-danger { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .badge-success { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container navbar" style="height: 70px;">
+      <a href="index.html" class="logo">
+        <div class="logo-icon"><i class="ph ph-heartbeat"></i></div>
+        Wellora
+      </a>
+      <div class="nav-actions">
+        <span style="font-weight: 500; margin-right: 15px;">Welcome, Patient</span>
+        <a href="index.html" class="btn btn-outline" style="padding: 6px 16px;">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <div class="dash-header">
+      <div>
+        <h1 style="font-size: 2rem; color: var(--primary-dark);">Diagnostic Pipeline</h1>
+        <p style="color: var(--text-gray);">Upload your medical report and enter symptoms for AI analysis.</p>
+      </div>
+    </div>
+
+    <div class="dash-card">
+      <form id="uploadForm">
+        <div class="form-group">
+          <label for="symptoms">Describe your symptoms</label>
+          <textarea id="symptoms" class="form-control" placeholder="E.g., I have been experiencing sharp chest pain when walking upstairs, and mild shortness of breath..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Medical Report (PDF or Image)</label>
+          <label class="file-upload-box" for="reportFile">
+            <i class="ph ph-cloud-arrow-up"></i>
+            <h3 style="margin-bottom: 8px;">Click to upload report</h3>
+            <p style="color: var(--text-gray); font-size: 0.9rem;" id="fileNameDisplay">Supports PNG, JPG, PDF</p>
+          </label>
+          <input type="file" id="reportFile" accept=".png, .jpg, .jpeg, .pdf" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 14px;">
+          <i class="ph ph-sparkle"></i> Analyze with Wellora AI
+        </button>
+      </form>
+    </div>
+
+    <div id="loader" class="dash-card loader" style="background: var(--primary-dark); color: white;">
+      <div class="spinner"></div>
+      <h3>AI is analyzing your report...</h3>
+      <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 8px;">Running OCR & ML Prediction Pipeline</p>
+    </div>
+
+    <div id="resultsCard" class="dash-card results-card">
+      <h2 style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+        <i class="ph-fill ph-check-circle" style="color: var(--accent-teal);"></i> Analysis Complete
+      </h2>
+      
+      <div id="predictionBadge" class="prediction-badge"></div>
+      
+      <div class="diagnosis-text" id="diagnosisText"></div>
+      
+      <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+        <h4 style="color: #94a3b8; margin-bottom: 10px;">Extracted Metrics (Internal Use)</h4>
+        <pre id="metricsDisplay" style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; font-size: 0.85rem; overflow-x: auto; color: #cbd5e1;"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const reportFileInput = document.getElementById('reportFile');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const uploadForm = document.getElementById('uploadForm');
+    const loader = document.getElementById('loader');
+    const resultsCard = document.getElementById('resultsCard');
+
+    reportFileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        fileNameDisplay.textContent = e.target.files[0].name;
+        fileNameDisplay.style.color = "var(--primary-dark)";
+        fileNameDisplay.style.fontWeight = "600";
+      }
+    });
+
+    uploadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const file = reportFileInput.files[0];
+      const symptoms = document.getElementById('symptoms').value;
+      
+      if (!file) return alert('Please select a file');
+
+      const formData = new FormData();
+      formData.append('report', file);
+      formData.append('symptoms', symptoms);
+
+      uploadForm.parentElement.style.display = 'none';
+      loader.style.display = 'block';
+
+      try {
+        const response = await fetch('http://localhost:5555/api/upload-report', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          loader.style.display = 'none';
+          resultsCard.style.display = 'block';
+          
+          const badge = document.getElementById('predictionBadge');
+          if (data.prediction === 1) {
+            badge.className = 'prediction-badge badge-danger';
+            badge.innerHTML = '<i class="ph ph-warning-circle"></i> High Risk Detected';
+          } else {
+            badge.className = 'prediction-badge badge-success';
+            badge.innerHTML = '<i class="ph ph-check-circle"></i> Low Risk / Normal';
+          }
+          
+          document.getElementById('diagnosisText').innerHTML = data.diagnosis.replace(/\n/g, '<br>');
+          document.getElementById('metricsDisplay').textContent = JSON.stringify(data.extractedMetrics, null, 2);
+        } else {
+          throw new Error(data.error || 'Failed to analyze report');
+        }
+      } catch (err) {
+        alert('Error: ' + err.message);
+        loader.style.display = 'none';
+        uploadForm.parentElement.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
