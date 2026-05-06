@@ -18,10 +18,23 @@ app.use(express.json());
 
 const JWT_SECRET = process.env.JWT_SECRET || 'wellora_secret_key_123';
 
-// Connect to MongoDB Local Community Server
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/wellora';
-mongoose.connect(MONGODB_URI).then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// Connect to MongoDB Local Community Server or In-Memory Memory Server
+let MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/wellora';
+
+async function connectDB() {
+  try {
+    await mongoose.connect(MONGODB_URI);
+    console.log('Connected to MongoDB');
+  } catch (err) {
+    console.log('Local MongoDB not found. Starting in-memory MongoDB...');
+    const { MongoMemoryServer } = require('mongodb-memory-server');
+    const mongoServer = await MongoMemoryServer.create();
+    MONGODB_URI = mongoServer.getUri();
+    await mongoose.connect(MONGODB_URI);
+    console.log('Connected to In-Memory MongoDB');
+  }
+}
+connectDB();
 
 // Set up Multer for file uploads
 const upload = multer({ dest: 'uploads/' });
@@ -48,7 +61,7 @@ const verifyToken = (req, res, next) => {
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    
+
     let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ error: 'User already exists' });
@@ -112,15 +125,15 @@ app.post('/api/upload-report', verifyToken, upload.single('report'), async (req,
     const worker = await Tesseract.createWorker('eng');
     const { data: { text } } = await worker.recognize(file.path);
     await worker.terminate();
-    
+
     console.log('2. Extracting metrics & Running prediction module via FastAPI...');
     // 2. & 3. & 4. Use FastAPI to extract metrics, predict, and frame the diagnosis
     let apiResponse;
     try {
       const response = await axios.post(`${FASTAPI_URL}/process_report`, {
-        text: text,
+        text,
         symptoms: symptoms || ""
-      });
+      }, { timeout: 120000 });
       apiResponse = response.data;
     } catch (e) {
       console.error('FastAPI error:', e.message);
