@@ -1,7 +1,6 @@
-cat > requirements.txt << EOF
 fastapi
 uvicorn
-scikit-learn
+scikit-learn==1.6.1
 pandas
 numpy
 python-multipart
